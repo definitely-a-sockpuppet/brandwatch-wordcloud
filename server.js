@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/public'));
  */
 app.get('/json', function (request, response) {
     'use strict';
-    response.json(200, {'sample': 'data'});
+    response.status(200).json({'sample': 'data'});
 });
 
 app.listen(3000);
