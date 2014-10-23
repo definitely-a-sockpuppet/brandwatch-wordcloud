@@ -7,10 +7,14 @@ var app = express();
 
 app.use(express.static(__dirname + '/public'));
 
+/**
+ * Literally just a json response dumping the provided
+ * topics.json file.
+ */
 app.get('/json', function (request, response) {
     'use strict';
-    response.json(200, {'farts': 'lol'});
+    response.json(200, {'sample': 'data'});
 });
 
 app.listen(3000);
-console.log('Listening on port 3000');
+console.log('Listening on port 3000.');
