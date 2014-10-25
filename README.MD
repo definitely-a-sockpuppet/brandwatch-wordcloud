@@ -10,6 +10,12 @@ and then:
 
 and then visit http://localhost:3000/ to make your wildest dreams come true.
 
+##Build
+
+To build the project, clone the whole repo and make sure you have the command line tools for both Mocha and Gulp (npm install -g mocha && npm install -g gulp), then simply run the gulp command. That will take care of getting everything built and will also watch the js and scss files for changes to kick off a new build.
+
+I'm including the compiled versions in this repo so a build is not necessary to display the root page.
+
 ##Choices made so far / goals
 
 * Plugin will be standalone and compiled down to it's most lightweight form.

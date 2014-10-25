@@ -1,1 +1,1 @@
-window.onload = alert('lol');
+console.log('hello world!');

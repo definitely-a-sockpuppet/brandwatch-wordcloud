@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
  */
 app.get('/topics', function (request, response) {
     'use strict';
-    var topics = fs.readFile('./src/json/topics.json');
+    var topics = fs.readFileSync('src/json/topics.json', 'utf-8');
     response.status(200).json(topics);
 });
 
