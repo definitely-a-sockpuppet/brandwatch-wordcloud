@@ -3,7 +3,8 @@
  *  files and to provide a json endpoint.
  */
 var express = require('express');
-var app = express();
+var app     = express();
+var fs      = require('fs');
 
 app.use(express.static(__dirname + '/public'));
 
@@ -11,9 +12,10 @@ app.use(express.static(__dirname + '/public'));
  * Literally just a json response dumping the provided
  * topics.json file.
  */
-app.get('/json', function (request, response) {
+app.get('/topics', function (request, response) {
     'use strict';
-    response.status(200).json({'sample': 'data'});
+    var topics = fs.readFile('./src/json/topics.json');
+    response.status(200).json(topics);
 });
 
 app.listen(3000);
