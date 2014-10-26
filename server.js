@@ -2,11 +2,13 @@
  *  Exceedingly simple server just to serve up
  *  files and to provide a json endpoint.
  */
-var express = require('express');
-var app     = express();
-var fs      = require('fs');
+var express     = require('express');
+var app         = express();
+var fs          = require('fs');
+var compression = require('compression');
 
 app.use(express.static(__dirname + '/public'));
+app.use(compression());
 
 /**
  * Literally just a json response dumping the provided
