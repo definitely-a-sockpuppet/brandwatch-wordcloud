@@ -92,6 +92,7 @@ WordCloud.prototype.render = function () {
         a.innerHTML = topic.label;
         a.href = '#';
 
+        a.classList.add('topic');
         a.classList.add(_this.getSizeClass(topic.volume));
         a.classList.add(_this.getSentimentClass(topic.sentimentScore));
 
@@ -227,7 +228,12 @@ WordCloud.prototype.getSizeClass = function (volume) {
 
 /**
  * Export the module for use in browserify.
+ *
+ * This also includes a short workaround for the module.exports
+ * as it works fine in the build, but phantomjs will complain
+ * as it doesn't exist.
  */
+var module = module === undefined ? {} : module;
 module.exports = WordCloud;
 
 },{}],2:[function(require,module,exports){
