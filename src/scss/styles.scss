@@ -1,3 +1,39 @@
-body {
-    background-color: #fefefe;
+#word-cloud ul {
+    padding: 0;
+    li {
+        list-style: none;
+        display: inline-block;
+        margin-right: 4px;
+        a {
+            color: DimGrey;
+        }
+
+        // Sentiment colouring
+        .high-sentiment {
+            color: ForestGreen;
+        }
+        .low-sentiment {
+            color: DarkRed;
+        }
+
+        // Sizes for each of the links
+        .size-1 {
+            font-size: 12px;
+        }
+        .size-2 {
+            font-size: 18px;
+        }
+        .size-3 {
+            font-size: 22px;
+        }
+        .size-4 {
+            font-size: 26px;
+        }
+        .size-5 {
+            font-size: 30px;
+        }
+        .size-6 {
+            font-size: 36px;
+        }
+    }
 }

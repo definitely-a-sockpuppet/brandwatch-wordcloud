@@ -1,2 +1,24 @@
-body {
-  background-color: #fefefe; }
+#word-cloud ul {
+  padding: 0; }
+  #word-cloud ul li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 4px; }
+    #word-cloud ul li a {
+      color: DimGrey; }
+    #word-cloud ul li .high-sentiment {
+      color: ForestGreen; }
+    #word-cloud ul li .low-sentiment {
+      color: DarkRed; }
+    #word-cloud ul li .size-1 {
+      font-size: 12px; }
+    #word-cloud ul li .size-2 {
+      font-size: 18px; }
+    #word-cloud ul li .size-3 {
+      font-size: 22px; }
+    #word-cloud ul li .size-4 {
+      font-size: 26px; }
+    #word-cloud ul li .size-5 {
+      font-size: 30px; }
+    #word-cloud ul li .size-6 {
+      font-size: 36px; }

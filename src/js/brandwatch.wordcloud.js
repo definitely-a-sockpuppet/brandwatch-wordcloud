@@ -6,8 +6,11 @@
  */
 function WordCloud(element) {
     'use strict';
-    this.element    = element;
-    this.data       = {};
+    this.element        = element;
+    this.data           = {};
+    this.chunkCount     = 6;
+    this.chunkSize      = null;
+    this.chunkStart     = null;
 }
 
 
@@ -17,13 +20,33 @@ function WordCloud(element) {
  * needs doing to it, barring a simple JSON.parse to make it into a
  * js object.
  *
+ * Then it determins the minimum and maximum volumes available and
+ * finds out the cutoff points for the 6 (or however many) chunks
+ * which are used to determine which of the sizes the selected
+ * tag would be in.
+ *
  * @param   dataset     - Object returned by /topics endpoint, more specifically the provided topics.json.
  * @return  WordCloud   - Itself for method chaining.
  */
 WordCloud.prototype.parseData = function (dataset) {
     'use strict';
     this.data = JSON.parse(dataset);
-    this.render();
+
+    var min = Number.POSITIVE_INFINITY;
+    var max = Number.NEGATIVE_INFINITY;
+
+    this.data.topics.forEach(function (topic) {
+        if (topic.volume < min) {
+            min = topic.volume;
+        }
+        if (topic.volume > max) {
+            max = topic.volume;
+        }
+    });
+
+    this.chunkSize = Math.ceil((max - min) / this.chunkCount);
+    this.chunkStart = min;
+
     return this;
 };
 
@@ -54,7 +77,12 @@ WordCloud.prototype.render = function () {
         throw new Error('Dataset has not yet been set and is null. Please add data using the WordCloud.parseData method.');
     }
 
+    /**
+     * Second iteration through the topics will actually build
+     * the html.
+     */
     var ul = document.createElement('ul');
+    var _this = this;
 
     this.data.topics.forEach(function (topic) {
         var li  = document.createElement('li');
@@ -63,18 +91,10 @@ WordCloud.prototype.render = function () {
         a.innerHTML = topic.label;
         a.href = '#';
 
-        /**
-         * Quick and dirty colouring.
-         *
-         * @return {undefined}
-         */
-        if (topic.sentimentScore > 60) {
-            a.style.color = '#0f0';
-        } else if (topic.sentimentScore < 40) {
-            a.style.color = '#f00';
-        } else {
-            a.style.color = '#777';
-        }
+        a.className = _this.getSentimentClass(topic.sentimentScore);
+        a.className += ' ' + _this.getSizeClass(topic.volume);
+
+        a.addEventListener('click', _this.handleClick, true);
 
         li.appendChild(a);
         ul.appendChild(li);
@@ -86,6 +106,61 @@ WordCloud.prototype.render = function () {
     return this;
 };
 
+
+/**
+ * handleClick
+ * Click handler to display the popup for the clicked tag.
+ *
+ * @param event
+ * @return {undefined}
+ */
+WordCloud.prototype.handleClick = function (event) {
+    'use strict';
+    event.preventDefault();
+    var element = event.target;
+};
+
+
+/**
+ * getSentimentClass
+ * Determines the sentimentScore if it's above or below the negative
+ * or positive thresholds and returns the class name to be applied
+ * to the link.
+ *
+ * @param   sentimentScore  - The sentimentScore of the given topic.
+ * @return  String          - Class name based on the score.
+ */
+WordCloud.prototype.getSentimentClass = function (sentimentScore) {
+    'use strict';
+    if (sentimentScore > 60) {
+        return 'high-sentiment';
+    } else if (sentimentScore < 40) {
+        return 'low-sentiment';
+    } else {
+        return 'neutral-sentiment';
+    }
+};
+
+
+/**
+ * getSizeClass
+ * Returns the class used for size based on which chunk
+ * the volume falls into. This is calculated when the data
+ * is originally parsed.
+ *
+ * @param   volume - Integer of the current topic's volume.
+ * @return  String - Class name determined by where the volume sits.
+ */
+WordCloud.prototype.getSizeClass = function (volume) {
+    'use strict';
+
+    for (var i = 1; i <= this.chunkCount; i++) {
+        console.log(volume, (this.chunkSize * i) + this.chunkStart);
+        if (volume <= (this.chunkSize * i) + this.chunkStart) {
+            return 'size-' + i;
+        }
+    }
+};
 
 /**
  * Export the module for use in browserify.
