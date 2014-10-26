@@ -69,6 +69,7 @@ html, body {
       display: block; }
     #word-cloud > ul .infopane-container .close {
       position: absolute;
+      line-height: normal;
       top: 5px;
       right: 10px;
       font-weight: bold;
