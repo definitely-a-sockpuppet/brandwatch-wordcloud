@@ -1,12 +1,16 @@
 html, body {
   background: #fefefe;
   color: 373737;
-  font-family: sans-serif; }
+  font-family: sans-serif;
+  margin-top: 50px;
+  color: #333; }
+
+.container {
+  max-width: 70%;
+  margin: 0 auto; }
 
 #word-cloud > ul {
-  padding: 0;
-  margin: 0 auto;
-  max-width: 70%; }
+  padding: 0; }
   #word-cloud > ul > li {
     list-style: none;
     display: inline-block;
