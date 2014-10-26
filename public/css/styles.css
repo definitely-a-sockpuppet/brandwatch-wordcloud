@@ -48,11 +48,11 @@ html, body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); }
     #word-cloud > ul .infopane-container:before {
       display: block;
-      width: 10px;
-      height: 10px;
+      width: 0;
+      height: 0;
       position: absolute;
       content: '';
-      top: -10px;
+      top: -5px;
       left: 5px;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
