@@ -19,7 +19,8 @@ html, body {
     #word-cloud > ul > li a {
       color: #565051;
       text-decoration: none;
-      font-weight: bold; }
+      font-weight: bold;
+      line-height: 0; }
       #word-cloud > ul > li a:hover {
         color: #3c3738; }
     #word-cloud > ul > li .high-sentiment {
