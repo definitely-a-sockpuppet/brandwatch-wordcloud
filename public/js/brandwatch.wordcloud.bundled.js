@@ -7,11 +7,11 @@
  */
 function WordCloud(element) {
     'use strict';
-    this.element        = element;
-    this.data           = {};
-    this.chunkCount     = 6;
-    this.chunkSize      = null;
-    this.chunkStart     = null;
+    this.element        = element;  // HTMLElement to add the wordlist to
+    this.data           = {};       // Dataset from topics.json
+    this.chunkCount     = 6;        // Amount of chunks to break the volumes into
+    this.chunkSize      = null;     // Size of each chunk
+    this.chunkStart     = null;     // Minimum volume to offset chunk sizes
 }
 
 
@@ -92,12 +92,24 @@ WordCloud.prototype.render = function () {
         a.innerHTML = topic.label;
         a.href = '#';
 
-        a.className = _this.getSentimentClass(topic.sentimentScore);
-        a.className += ' ' + _this.getSizeClass(topic.volume);
+        a.classList.add(_this.getSizeClass(topic.volume));
+        a.classList.add(_this.getSentimentClass(topic.sentimentScore));
+
+        /*
+         *  TODO: HTMLElement.dataSet unavailable for versions of
+         *  IE < 11.
+         */
+        a.dataSet = {};
+        a.dataSet.label = topic.label;
+        a.dataSet.volume = topic.volume;
+        a.dataSet.positive = topic.sentiment.positive || null;
+        a.dataSet.neutral = topic.sentiment.neutral || null;
+        a.dataSet.negative = topic.sentiment.negative || null;
 
         a.addEventListener('click', _this.handleClick, true);
 
         li.appendChild(a);
+        li.appendChild(_this.createInfoPane(a.dataSet));
         ul.appendChild(li);
     });
 
@@ -118,7 +130,57 @@ WordCloud.prototype.render = function () {
 WordCloud.prototype.handleClick = function (event) {
     'use strict';
     event.preventDefault();
-    var element = event.target;
+    var className = 'show-info';
+    // Hides the previous shown panes.
+    var panes = document.getElementsByClassName(className);
+    for (var i = 0; i < panes.length; i++) {
+        panes[i].classList.remove(className);
+    }
+    // And shows the new one.
+    event.target.nextSibling.classList.toggle(className);
+};
+
+
+/**
+ * createInfoPane
+ * Creates an info pane for each of the topics which will be
+ * shown and hidden based on clicks.
+ *
+ * @param   dataSet     - Object containing data to display
+ * @return  HTMLElement - info pane
+ */
+WordCloud.prototype.createInfoPane = function (dataSet) {
+    'use strict';
+    var container = document.createElement('div');
+    container.className = 'infopane-container';
+
+    var ul = document.createElement('ul');
+
+    for (var attribute in dataSet) {
+        if (dataSet.hasOwnProperty(attribute)) {
+            var li = document.createElement('li');
+            if (dataSet[attribute] !== null) {
+                if (attribute !== 'label') {
+                    li.innerHTML = attribute + ' : ' + dataSet[attribute];
+                } else {
+                    li.innerHTML = '<h2>' + dataSet[attribute] + '</h2>';
+                }
+                ul.appendChild(li);
+            }
+        }
+    }
+
+    var closeLink = document.createElement('a');
+    closeLink.innerHTML = 'x';
+    closeLink.classList.add('close');
+    closeLink.href = '#';
+    closeLink.addEventListener('click', function () {
+        closeLink.parentElement.classList.remove('show-info');
+    });
+    container.appendChild(closeLink);
+    container.appendChild(ul);
+
+    return container;
 };
 
 
@@ -156,11 +218,11 @@ WordCloud.prototype.getSizeClass = function (volume) {
     'use strict';
 
     for (var i = 1; i <= this.chunkCount; i++) {
-        console.log(volume, (this.chunkSize * i) + this.chunkStart);
         if (volume <= (this.chunkSize * i) + this.chunkStart) {
             return 'size-' + i;
         }
     }
+    throw new Error('Failed to assign the topic a size. This would be caused by the parseData method failing to break the chunks up properly.', volume);
 };
 
 /**
@@ -181,7 +243,7 @@ var request     = new XMLHttpRequest();
  * Throw an error if it fails to retrieve the topics.
  * The error handling is pretty minimal here, but it
  * at least checks if the server responded OK, if not,
- * try checking the server.js log.
+ * try checking the server.js stdout.
  */
 request.open('GET', '/topics', true);
 request.send();

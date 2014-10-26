@@ -10,7 +10,7 @@ var request     = new XMLHttpRequest();
  * Throw an error if it fails to retrieve the topics.
  * The error handling is pretty minimal here, but it
  * at least checks if the server responded OK, if not,
- * try checking the server.js log.
+ * try checking the server.js stdout.
  */
 request.open('GET', '/topics', true);
 request.send();
