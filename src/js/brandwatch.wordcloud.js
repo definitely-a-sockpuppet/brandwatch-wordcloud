@@ -225,6 +225,7 @@ WordCloud.prototype.getSizeClass = function (volume) {
     throw new Error('Failed to assign the topic a size. This would be caused by the parseData method failing to break the chunks up properly.', volume);
 };
 
+
 /**
  * Export the module for use in browserify.
  *
