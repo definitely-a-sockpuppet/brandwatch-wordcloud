@@ -24,7 +24,6 @@ Usually more time would be spend to separate tasks and to create different build
 
 ##Choices made so far / goals
 
-* Bootstrap is referenced but that's just to add a bit of default styling. It can be removed with no impact whatsoever.
 * Plugin will be standalone and compiled down to it's most lightweight form.
 * No dependencies to run in front end.
 * No jQuery.

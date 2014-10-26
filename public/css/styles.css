@@ -1,6 +1,7 @@
 html, body {
   background: #fefefe;
-  color: 373737; }
+  color: 373737;
+  font-family: sans-serif; }
 
 #word-cloud > ul {
   padding: 0;
@@ -38,7 +39,7 @@ html, body {
     width: 250px;
     background: #373737;
     color: #fefefe;
-    padding: 8px;
+    padding: 16px;
     border-radius: 3px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); }
     #word-cloud > ul .infopane-container:before {
@@ -70,3 +71,10 @@ html, body {
         max-width: 215px;
         margin: 0 0 4px 0;
         font-weight: bold; }
+      #word-cloud > ul .infopane-container li .positive {
+        color: ForestGreen; }
+      #word-cloud > ul .infopane-container li .negative {
+        color: red; }
+      #word-cloud > ul .infopane-container li .total {
+        margin-bottom: 8px;
+        display: inline-block; }

@@ -175,6 +175,7 @@ describe('WordCloud', function () {
     describe('#createInfoPane()', function () {
         var dataSet = {
             label: 'Test Name',
+            total: 30,
             positive: 10,
             negative: 0,
             neutral: 20
@@ -196,12 +197,14 @@ describe('WordCloud', function () {
     });
 
     describe('#render()', function () {
+        /*
         wc.render();
         var topics = wc.element.querySelectorAll('#word-cloud > ul > li');
 
         for (var i = 0; i < topics.length; i++) {
             console.log(typeof topics[i]);
         }
+        */
     });
 
     describe('#handleClick()', function () {

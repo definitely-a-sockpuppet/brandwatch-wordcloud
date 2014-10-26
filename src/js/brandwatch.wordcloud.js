@@ -101,7 +101,7 @@ WordCloud.prototype.render = function () {
          */
         a.dataSet = {};
         a.dataSet.label = topic.label;
-        a.dataSet.volume = topic.volume;
+        a.dataSet.total = topic.volume;
         a.dataSet.positive = topic.sentiment.positive || null;
         a.dataSet.neutral = topic.sentiment.neutral || null;
         a.dataSet.negative = topic.sentiment.negative || null;
@@ -161,7 +161,7 @@ WordCloud.prototype.createInfoPane = function (dataSet) {
             var li = document.createElement('li');
             if (dataSet[attribute] !== null) {
                 if (attribute !== 'label') {
-                    li.innerHTML = attribute + ' : ' + dataSet[attribute];
+                    li.innerHTML = attribute + ' : <span class="' + attribute + '">' + dataSet[attribute] + '</span>';
                 } else {
                     li.innerHTML = '<h2>' + dataSet[attribute] + '</h2>';
                 }

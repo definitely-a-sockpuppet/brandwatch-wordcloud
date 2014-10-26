@@ -1,6 +1,7 @@
 html, body {
     background: #fefefe;
     color: 373737;
+    font-family: sans-serif;
 }
 
 #word-cloud > ul {
@@ -54,7 +55,7 @@ html, body {
         width: 250px;
         background: #373737;
         color: #fefefe;
-        padding: 8px;
+        padding: 16px;
         border-radius: 3px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
         &:before {
@@ -90,6 +91,16 @@ html, body {
                 max-width: 215px;
                 margin: 0 0 4px 0;
                 font-weight: bold;
+            }
+            .positive {
+                color: ForestGreen;
+            }
+            .negative {
+                color: red;
+            }
+            .total {
+                margin-bottom: 8px;
+                display: inline-block;
             }
         }
     }

@@ -102,7 +102,7 @@ WordCloud.prototype.render = function () {
          */
         a.dataSet = {};
         a.dataSet.label = topic.label;
-        a.dataSet.volume = topic.volume;
+        a.dataSet.total = topic.volume;
         a.dataSet.positive = topic.sentiment.positive || null;
         a.dataSet.neutral = topic.sentiment.neutral || null;
         a.dataSet.negative = topic.sentiment.negative || null;
@@ -162,7 +162,7 @@ WordCloud.prototype.createInfoPane = function (dataSet) {
             var li = document.createElement('li');
             if (dataSet[attribute] !== null) {
                 if (attribute !== 'label') {
-                    li.innerHTML = attribute + ' : ' + dataSet[attribute];
+                    li.innerHTML = attribute + ' : <span class="' + attribute + '">' + dataSet[attribute] + '</span>';
                 } else {
                     li.innerHTML = '<h2>' + dataSet[attribute] + '</h2>';
                 }
@@ -237,31 +237,34 @@ var module = module === undefined ? {} : module;
 module.exports = WordCloud;
 
 },{}],2:[function(require,module,exports){
-var WordCloud   = require('./brandwatch.wordcloud');
-var wc          = new WordCloud(document.getElementById('word-cloud'));
-var request     = new XMLHttpRequest();
-
-/**
- * Simply grab the json from the /topics endpoint
- * and - if successful - allow the WordCloud plugin
- * to parse the data, and then render it.
- *
- * Throw an error if it fails to retrieve the topics.
- * The error handling is pretty minimal here, but it
- * at least checks if the server responded OK, if not,
- * try checking the server.js stdout.
- */
-request.open('GET', '/topics', true);
-request.send();
-
-request.onload = function () {
+(function () {
     'use strict';
-    if (request.status === 200) {
-        wc.parseData(JSON.parse(request.responseText))
-          .render();
-    } else {
-        throw new Error('Failed to retrieve topics.');
-    }
-};
+
+    var WordCloud   = require('./brandwatch.wordcloud');
+    var wc          = new WordCloud(document.getElementById('word-cloud'));
+    var request     = new XMLHttpRequest();
+
+    /**
+     * Simply grab the json from the /topics endpoint
+     * and - if successful - allow the WordCloud plugin
+     * to parse the data, and then render it.
+     *
+     * Throw an error if it fails to retrieve the topics.
+     * The error handling is pretty minimal here, but it
+     * at least checks if the server responded OK, if not,
+     * try checking the server.js stdout.
+     */
+    request.open('GET', '/topics', true);
+    request.send();
+
+    request.onload = function () {
+        if (request.status === 200) {
+            wc.parseData(JSON.parse(request.responseText))
+              .render();
+        } else {
+            throw new Error('Failed to retrieve topics.');
+        }
+    };
+})();
 
 },{"./brandwatch.wordcloud":1}]},{},[2])
