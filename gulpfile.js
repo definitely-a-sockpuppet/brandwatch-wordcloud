@@ -4,12 +4,14 @@ var browserify  = require('gulp-browserify');
 var sass        = require('gulp-sass');
 var rename      = require('gulp-rename');
 var mocha       = require('gulp-mocha-phantomjs');
+var uglify      = require('gulp-uglify');
 
 gulp.task('scripts', function () {
     'use strict';
     return gulp.src('./src/js/main.js')
         .pipe(plumber())
         .pipe(browserify())
+        .pipe(uglify())
         .pipe(rename('brandwatch.wordcloud.bundled.js'))
         .pipe(gulp.dest('./public/js'));
 });
