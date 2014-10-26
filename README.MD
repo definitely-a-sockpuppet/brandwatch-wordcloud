@@ -31,3 +31,4 @@ Usually more time would be spend to separate tasks and to create different build
 * Gulp is used to build the bundled js and scss. This is purely a build step and nothing outside of the /public folder required for usual usage.
 * Gulp, browserify mocha and assert, for the build because they're all pretty nice and a little bit quicker and more lightweight than things like require and grunt.
 * Offload as much as possible to quick css as opposed to costly javascript RE: presentation. This has been done with the info popup as there's no real point going to massive lengths in js when a simple class toggle will suffice.
+* All the code is commented and jsdoc should be able to generate working docs based on the source comments.
