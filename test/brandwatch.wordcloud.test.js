@@ -1,10 +1,16 @@
-/* globals assert, describe, WordCloud */
+/* globals assert, describe, WordCloud, beforeEach */
 
+/**
+ * Tests for the WordCloud class on it's own.
+ */
 describe('WordCloud', function () {
     'use strict';
+    // General purpose element for use with everything
     var element = document.createElement('div');
     element.id = 'word-cloud';
+    document.body.appendChild(element);
 
+    // First two topics taken from the topics.json
     var sampleData = JSON.stringify({
         'topics': [
             {
@@ -131,6 +137,12 @@ describe('WordCloud', function () {
         ]
     });
 
+
+    /**
+     * Check the constructor.
+     * Pretty much just to ensure that the necessary properties
+     * are there.
+     */
     describe('constructor', function () {
         var wc = new WordCloud(element);
         it ('instance should have default settings applied', function () {
@@ -142,6 +154,11 @@ describe('WordCloud', function () {
         });
     });
 
+
+    /**
+     * Check that the WordCloud instance is properly assigning the data
+     * and calculating the 6 different groups of volumes.
+     */
     describe('#parseData()', function () {
         var wc = new WordCloud(element);
         it('should assign the data to the WordCloud instance and work out chunk sizes', function () {
@@ -151,6 +168,11 @@ describe('WordCloud', function () {
         });
     });
 
+
+    /**
+     * Ensure that the three different classes for sentiment styling
+     * are returning the right ones.
+     */
     describe('#getSentimentClass()', function () {
         var wc = new WordCloud(element);
         it('should return the correct class based on sentiment provided.', function () {
@@ -160,6 +182,11 @@ describe('WordCloud', function () {
         });
     });
 
+
+    /**
+     * Check to see if the size classes are being assigned
+     * relative to the volume of the given topic.
+     */
     describe('#getSizeClass()', function () {
         var wc = new WordCloud(element);
         wc.parseData(sampleData);
@@ -176,6 +203,12 @@ describe('WordCloud', function () {
         });
     });
 
+
+    /**
+     * Start digging around in the html created by the
+     * createInfoPane method to make sure it's actually
+     * putting everything needed in the spec there.
+     */
     describe('#createInfoPane()', function () {
         var dataSet = {
             label: 'Test Name',
@@ -201,6 +234,12 @@ describe('WordCloud', function () {
         });
     });
 
+
+    /**
+     * Check that the render element is correctly building
+     * the wordcloud and that it's assigning the right classes
+     * and the like.
+     */
     describe('#render()', function () {
         var wc = new WordCloud(element);
         wc.parseData(sampleData);
@@ -229,15 +268,37 @@ describe('WordCloud', function () {
         });
     });
 
+
+    /**
+     * Check that the click handler for each of the topics
+     * has been created.
+     */
     describe('#handleClick()', function () {
-        var wc = new WordCloud(element);
-        wc.parseData(sampleData);
-        wc.render();
-        it('should have a click handler to display information pane', function () {
-            var topics = document.querySelectorAll('a.topic');
-            for (var i = 0; i < topics.length; i++) {
-                assert.equals(typeof topics[i].click, 'function');
-            }
+        it('clicking the topic label should show and information pane', function () {
+            var wc = new WordCloud(element);
+            wc.parseData(sampleData);
+            wc.render();
+
+            /**
+             * Forgive my sins, but gulp-mocha-phantomjs won't allow the
+             * use of querySelectorAll or getElementsByClassName in this
+             * instance. Fun.
+             */
+            var topic = wc.element.childNodes[0].childNodes[0].childNodes[0];
+            var info = topic.nextSibling;
+
+            /**
+            * Manually dispatch event because just calling the .click() method
+            * seems to be broken in gulp-mocha-phantomjs.
+            *
+            * In hindsight I should probably use something that isn't broken.
+            *
+            * TODO: Stop using something that's broken.
+            */
+            var e = document.createEvent('MouseEvent');
+            e.initMouseEvent('click', true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null);
+            topic.dispatchEvent(e);
+            assert.equal(info.classList[1], 'show-info');
         });
     });
 });
