@@ -1,6 +1,6 @@
 html, body {
     background: #fefefe;
-    color: 373737;
+    color: #3b3131;
     font-family: sans-serif;
     margin-top: 50px;
     color: #333;
@@ -19,16 +19,26 @@ html, body {
         margin-right: 4px;
         position: relative;
         a {
-            color: DimGrey;
+            color: #565051;
             text-decoration: none;
+            font-weight: bold;
+            &:hover {
+                color: darken(#565051, 10%);
+            }
         }
 
         // Sentiment colouring
         .high-sentiment {
-            color: ForestGreen;
+            color: #4e9258;
+            &:hover {
+                color: darken(#4e9258, 10%);
+            }
         }
         .low-sentiment {
-            color: DarkRed;
+            color: #8c001a;
+            &:hover {
+                color: darken(#8c001a, 10%);
+            }
         }
 
         // Sizes for each of the links

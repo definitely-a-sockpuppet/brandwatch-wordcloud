@@ -1,6 +1,6 @@
 html, body {
   background: #fefefe;
-  color: 373737;
+  color: #3b3131;
   font-family: sans-serif;
   margin-top: 50px;
   color: #333; }
@@ -17,12 +17,19 @@ html, body {
     margin-right: 4px;
     position: relative; }
     #word-cloud > ul > li a {
-      color: DimGrey;
-      text-decoration: none; }
+      color: #565051;
+      text-decoration: none;
+      font-weight: bold; }
+      #word-cloud > ul > li a:hover {
+        color: #3c3738; }
     #word-cloud > ul > li .high-sentiment {
-      color: ForestGreen; }
+      color: #4e9258; }
+      #word-cloud > ul > li .high-sentiment:hover {
+        color: #3c7143; }
     #word-cloud > ul > li .low-sentiment {
-      color: DarkRed; }
+      color: #8c001a; }
+      #word-cloud > ul > li .low-sentiment:hover {
+        color: #590012; }
     #word-cloud > ul > li .size-1 {
       font-size: 12px; }
     #word-cloud > ul > li .size-2 {
