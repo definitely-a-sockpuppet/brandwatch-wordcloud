@@ -4,7 +4,6 @@ describe('WordCloud', function () {
     'use strict';
     var element = document.createElement('div');
     element.id = 'word-cloud';
-    var wc = new WordCloud(element);
 
     var sampleData = JSON.stringify({
         'topics': [
@@ -133,6 +132,7 @@ describe('WordCloud', function () {
     });
 
     describe('constructor', function () {
+        var wc = new WordCloud(element);
         it ('instance should have default settings applied', function () {
             assert(typeof wc.element === 'object');
             assert(typeof wc.data === 'object');
@@ -143,6 +143,7 @@ describe('WordCloud', function () {
     });
 
     describe('#parseData()', function () {
+        var wc = new WordCloud(element);
         it('should assign the data to the WordCloud instance and work out chunk sizes', function () {
             wc.parseData(sampleData);
             assert.equal(20, wc.chunkSize);
@@ -151,6 +152,7 @@ describe('WordCloud', function () {
     });
 
     describe('#getSentimentClass()', function () {
+        var wc = new WordCloud(element);
         it('should return the correct class based on sentiment provided.', function () {
             assert.equal('high-sentiment', wc.getSentimentClass(70));
             assert.equal('low-sentiment', wc.getSentimentClass(20));
@@ -159,7 +161,9 @@ describe('WordCloud', function () {
     });
 
     describe('#getSizeClass()', function () {
-        it('should return a numberic value dictating which chunk the size falls into from 1-6', function () {
+        var wc = new WordCloud(element);
+        wc.parseData(sampleData);
+        it('should return a numeric value dictating which chunk the size falls into from 1-6', function () {
             assert.equal('size-1', wc.getSizeClass(48));
             assert.equal('size-2', wc.getSizeClass(70));
             assert.equal('size-3', wc.getSizeClass(90));
@@ -181,6 +185,7 @@ describe('WordCloud', function () {
             neutral: 20
         };
 
+        var wc = new WordCloud(element);
         var infoPane = wc.createInfoPane(dataSet);
 
         it('should have a title based on the dataSet label', function () {
@@ -197,17 +202,37 @@ describe('WordCloud', function () {
     });
 
     describe('#render()', function () {
-        /*
+        var wc = new WordCloud(element);
+        wc.parseData(sampleData);
         wc.render();
-        var topics = wc.element.querySelectorAll('#word-cloud > ul > li');
 
-        for (var i = 0; i < topics.length; i++) {
-            console.log(typeof topics[i]);
-        }
-        */
+        var topics = wc.element.querySelectorAll('#word-cloud > ul > li');
+        var topic = topics[0].querySelectorAll('.topic')[0];
+
+        it('should have the correct label from the topics.json file', function () {
+            for (var i = 0; i < topics.length; i++) {
+                assert.equal(topics[i].querySelectorAll('.topic')[0].innerHTML, wc.data.topics[i].label);
+            }
+        });
+
+        it('should have a class to indicate it\'s size', function () {
+            assert.equal(topic.classList[1], 'size-6');
+            assert.equal(topic.classList[2], 'high-sentiment');
+        });
+
+        it('should have a set of data set with positive, negative and neutral votes', function () {
+            assert.equal(topic.dataSet.label, 'Berlin');
+            assert.equal(topic.dataSet.total, 165);
+            assert.equal(topic.dataSet.positive, 29);
+            assert.equal(topic.dataSet.neutral, 133);
+            assert.equal(topic.dataSet.negative, 3);
+        });
     });
 
     describe('#handleClick()', function () {
+        var wc = new WordCloud(element);
+        wc.parseData(sampleData);
+        wc.render();
         it('should have a click handler to display information pane', function () {
             var topics = document.querySelectorAll('a.topic');
             for (var i = 0; i < topics.length; i++) {
